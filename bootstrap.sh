@@ -18,5 +18,5 @@ usermod -aG docker vagrant
 
 systemctl enable docker
 
-
+apt-get install -y lynx
 

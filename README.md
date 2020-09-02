@@ -10,6 +10,7 @@ How to use:
 
 - Comepete bootstrap.sh file with other instructions
 - Try to set zsh as default shell
+- Create a user mapping from vagrant to docker
 
 
 

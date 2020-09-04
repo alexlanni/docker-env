@@ -20,3 +20,13 @@ systemctl enable docker
 
 apt-get install -y lynx
 
+apt-get install -y zsh
+
+## Install ZSH e oh-my-zsh
+
+su vagrant -c "curl -Lo install.sh https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+su vagrant -c "sh install.sh --unattended"
+#su vagrant -c "chsh -s $(which zsh)"
+sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' /home/vagrant/.zshrc
+
+echo "Please execute chsh -s $(which zsh) for switch to zsh."

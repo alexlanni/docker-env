@@ -18,9 +18,7 @@ usermod -aG docker vagrant
 
 systemctl enable docker
 
-apt-get install -y lynx
-
-apt-get install -y zsh
+apt-get install -y docker-compose lynx zsh
 
 ## Install ZSH e oh-my-zsh
 

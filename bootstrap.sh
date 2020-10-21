@@ -12,13 +12,20 @@ add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(
 
 apt-get update
 
-apt-get install -y docker-ce docker-ce-cli containerd.io pass gnupg2
+apt-get install -y docker-ce docker-ce-cli containerd.io
 
 usermod -aG docker vagrant
 
+## Abilitazione API Docker
+sed -i 's+-H fd://+-H fd:// -H=tcp://0.0.0.0:2375+g' /lib/systemd/system/docker.service
+
 systemctl enable docker
 
-apt-get install -y docker-compose lynx zsh
+systemctl daemon-reload
+
+service docker restart
+
+apt-get install -y docker-compose gnupg2 pass lynx zsh unzip
 
 ## Install ZSH e oh-my-zsh
 
@@ -27,4 +34,19 @@ su vagrant -c "sh install.sh --unattended"
 #su vagrant -c "chsh -s $(which zsh)"
 sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' /home/vagrant/.zshrc
 
-echo "Please execute chsh -s $(which zsh) for switch to zsh."
+chsh -s $(which zsh) vagrant
+
+chmod 700 /home/vagrant/.ssh/id_rsa
+
+## Gestione Inizializzazione progetti
+
+su vagrant -c "echo -e \"Host gitlab2.serverplan.com\n\tStrictHostKeyChecking no\n\" >> /home/vagrant/.ssh/config"
+su vagrant -c "mkdir /home/vagrant/Projects"
+
+su vagrant -c "git clone git@gitlab2.serverplan.com:serverplan/devstack.git /home/vagrant/Projects/devstack"
+su vagrant -c "bash /home/vagrant/Projects/devstack/stack/init-stack.sh"
+
+
+## Alias
+
+echo "alias dc=\"docker-compose\"" >> /home/vagrant/.zshrc
